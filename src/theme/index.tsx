@@ -9,18 +9,16 @@ export default {
     GRAY_200: '#EFF0F0',
     GRAY_100: '#FAFAFA',
     RED_DARK: '#BF3B44',
-    RED_LIGHT: '#F3BABD',
+    RED_LIGHT: '#F4E6E7',
     GREEN_DARK: '#639339',
-    GREEN_LIGHT: '#CBE4B4'
-  },
-  FONT_FAMILY: {
-    REGULAR: '',
-    BOLD: ''
+    GREEN_LIGHT: '#E5F0DB'
   },
   FONT_SIZE: {
-    SM: '14px',
-    MD: '16px',
-    LG: '18px',
-    XL: '24px'
+    XS: 12,
+    SM: 14,
+    MD: 16,
+    LG: 18,
+    XL: 24,
+    XXL: 32
   }
 }
