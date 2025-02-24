@@ -29,12 +29,12 @@ export const Describe = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
 `
 
-export type MeatTypeStyle = 'RIGTH' | 'WRONG'
-type MeatType = {
-  type: MeatTypeStyle
+export type MealTypeStyle = 'RIGTH' | 'WRONG'
+type MealType = {
+  type: MealTypeStyle
 }
 
-export const MeatIcon = styled.View<MeatType>`
+export const MealIcon = styled.View<MealType>`
   width: 15px;
   height: 15px;
 

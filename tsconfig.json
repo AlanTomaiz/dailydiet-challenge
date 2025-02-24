@@ -9,6 +9,7 @@
       "@screens/*": ["screens/*"],
       "@assets/*": ["assets/*"],
       "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"],
     }
   }
 }

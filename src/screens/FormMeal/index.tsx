@@ -25,7 +25,7 @@ type FormInput = {
   onDiet: 'RIGTH' | 'WRONG'
 }
 
-export default function FormMeat() {
+export default function FormMeal() {
   const navigation = useNavigation()
 
   const { control, handleSubmit, setValue, watch } = useForm<FormInput>()

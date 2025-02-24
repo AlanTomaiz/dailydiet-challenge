@@ -1,27 +1,27 @@
 import {
   Container,
   Describe,
-  MeatIcon,
-  MeatTypeStyle,
+  MealIcon,
+  MealTypeStyle,
   Separate,
   Time
 } from './styles'
 
 type Props = {
   time: string
-  meat: string
-  type?: MeatTypeStyle
+  meal: string
+  type?: MealTypeStyle
 }
 
-export function MeatCard({ time, meat, type = 'ACCEPT' }: Props) {
+export function MealCard({ time, meal, type = 'RIGTH' }: Props) {
   return (
     <Container>
       <Time>{time}</Time>
       <Separate />
       <Describe ellipsizeMode="tail" numberOfLines={1}>
-        {meat}
+        {meal}
       </Describe>
-      <MeatIcon type={type} />
+      <MealIcon type={type} />
     </Container>
   )
 }

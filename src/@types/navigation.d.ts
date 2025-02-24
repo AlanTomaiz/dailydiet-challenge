@@ -3,7 +3,7 @@ export declare global {
     interface RootParamList {
       home: undefined
       statistics: undefined
-      formmeat?: { meatId: string }
+      formmeal?: { mealId: string }
       formfinalyze: { type: string }
     }
   }

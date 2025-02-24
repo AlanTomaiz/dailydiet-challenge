@@ -5,13 +5,13 @@ import { useTheme } from 'styled-components/native'
 import { Button } from '@components/Button'
 import { Header } from '@components/Header'
 import { InfoCard } from '@components/InfoCard'
-import { MeatCard } from '@components/MeatCard'
+import { MealCard } from '@components/MealCard'
 import { useNavigation } from '@react-navigation/native'
 import {
   Container,
   PercentageArrowButton,
   SectionMeal,
-  SectionMeatTitle,
+  SectionMealTitle,
   SectionTitle,
   Subtitle,
   Title
@@ -59,7 +59,7 @@ export default function Home() {
       <SectionMeal>
         <SectionTitle>Refeições</SectionTitle>
         <Button
-          onPress={() => navigation.navigate('formmeat')}
+          onPress={() => navigation.navigate('formmeal')}
           icon={<Plus color={COLORS.WHITE} size={18} />}
           type="DEFAULT"
           title="Nova refeição"
@@ -69,10 +69,10 @@ export default function Home() {
         sections={data}
         keyExtractor={(item) => item.describe}
         renderItem={({ item }) => (
-          <MeatCard time={item.time} meat={item.describe} type="WRONG" />
+          <MealCard time={item.time} meal={item.describe} type="WRONG" />
         )}
         renderSectionHeader={({ section: { date } }) => (
-          <SectionMeatTitle>{date}</SectionMeatTitle>
+          <SectionMealTitle>{date}</SectionMealTitle>
         )}
         contentContainerStyle={{ paddingBottom: 100 }}
       />

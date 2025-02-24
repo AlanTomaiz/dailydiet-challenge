@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar'
 import { ThemeProvider } from 'styled-components/native'
 
 import { Loader } from '@components/Loader'
+import { ModalProvider } from '@hooks/useModal'
 import Routes from './src/routes'
 import theme from './src/theme'
 
@@ -15,8 +16,10 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar style="light" translucent />
-      {!fontsLoaded ? <Loader /> : <Routes />}
+      <ModalProvider>
+        {!fontsLoaded ? <Loader /> : <Routes />}
+        <StatusBar style="light" translucent />
+      </ModalProvider>
     </ThemeProvider>
   )
 }

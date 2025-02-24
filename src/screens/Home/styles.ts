@@ -21,7 +21,7 @@ export const SectionTitle = styled.Text`
   margin-bottom: 8px;
 `
 
-export const SectionMeatTitle = styled.Text`
+export const SectionMealTitle = styled.Text`
   font-weight: bold;
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
   margin-bottom: 8px;
