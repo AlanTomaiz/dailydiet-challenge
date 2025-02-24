@@ -5,7 +5,6 @@ import { useTheme } from 'styled-components/native'
 
 import { InfoCard } from '@components/InfoCard'
 import { MealType, useStorage } from '@hooks/useStorage'
-import { orderByDate } from '@utils/order'
 import {
   BackPageBtn,
   Container,
@@ -53,7 +52,7 @@ export default function Statistics() {
       // Best sequence
       let maxStreak = 0
       let currentStreak = 0
-      storage.sort(orderByDate).forEach((row) => {
+      storage.forEach((row) => {
         if (row.onDiet === 'RIGTH') {
           currentStreak++
           maxStreak = Math.max(maxStreak, currentStreak)
@@ -64,7 +63,7 @@ export default function Statistics() {
 
       setMeals({
         meals: storage,
-        percentage: (onDietCount / total) * 100,
+        percentage: (onDietCount / total) * 100 || 0,
         bestSequence: maxStreak,
         inDiet: onDietCount,
         offDiet: total - onDietCount

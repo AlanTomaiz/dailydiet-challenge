@@ -5,12 +5,12 @@ import { SectionList, TouchableOpacity } from 'react-native'
 import { useTheme } from 'styled-components/native'
 
 import { Button } from '@components/Button'
+import { EmptyList } from '@components/EmptyList'
 import { Header } from '@components/Header'
 import { InfoCard } from '@components/InfoCard'
 import { MealCard } from '@components/MealCard'
-import { MealType, useStorage } from '@hooks/useStorage'
+import { MealType, orderByDate, useStorage } from '@hooks/useStorage'
 import { formatDate } from '@utils/formate'
-import { orderByDate } from '@utils/order'
 import {
   Container,
   PercentageArrowButton,
@@ -48,8 +48,13 @@ export default function Home() {
           })
         } else {
           acc[index].data.push(cur)
-          acc[index].data = acc[index].data.sort(orderByDate)
         }
+
+        acc = acc.sort((a, b) => {
+          const dateA = a.date.split('.').reverse().join('-')
+          const dateB = b.date.split('.').reverse().join('-')
+          return orderByDate({ date: dateA }, { date: dateB }, 'desc')
+        })
 
         return acc
       }, [] as InOrderMealsType[])
@@ -59,7 +64,7 @@ export default function Home() {
         (item) => item.onDiet === 'RIGTH'
       ).length
 
-      setPercent((onDietCount / total) * 100)
+      setPercent((onDietCount / total) * 100 || 0)
       setData(inOrderMeals)
     })()
   }, [])
@@ -105,6 +110,7 @@ export default function Home() {
         renderSectionHeader={({ section: { date } }) => (
           <SectionMealTitle>{date}</SectionMealTitle>
         )}
+        ListEmptyComponent={<EmptyList />}
         contentContainerStyle={{ paddingBottom: 100 }}
       />
     </Container>

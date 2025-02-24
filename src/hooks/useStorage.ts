@@ -17,10 +17,22 @@ type HookType = {
 
 const MEAL_COLLECTION = '@dailydiet:meals'
 
+type OrderType = {
+  date: Date | string
+}
+
+export function orderByDate(a: OrderType, b: OrderType, tipe = 'asc') {
+  if (tipe === 'desc') {
+    return new Date(b.date).getTime() - new Date(a.date).getTime()
+  }
+
+  return new Date(a.date).getTime() - new Date(b.date).getTime()
+}
+
 export function useStorage(): HookType {
   async function getData(): Promise<MealType[]> {
     const storage = await AsyncStorage.getItem(MEAL_COLLECTION)
-    return storage ? JSON.parse(storage) : []
+    return storage ? JSON.parse(storage).sort(orderByDate) : []
   }
 
   async function setData(data: MealType) {
