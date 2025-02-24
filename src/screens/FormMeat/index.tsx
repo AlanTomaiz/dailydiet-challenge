@@ -36,6 +36,7 @@ export default function FormMeat() {
 
   function execute(data: FormInput) {
     console.log(data)
+    navigation.navigate('formfinalyze', { type: data.onDiet })
   }
 
   function onChange(input: 'date' | 'time', selectedDate?: Date) {
