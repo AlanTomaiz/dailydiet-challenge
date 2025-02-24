@@ -10,9 +10,9 @@ type Props = TouchableOpacityProps & {
 
 export function Button({ title, type, icon, ...rest }: Props) {
   return (
-    <Container type={type || 'INLINE'} {...rest}>
+    <Container type={type || 'DEFAULT'} {...rest}>
       {icon}
-      <Title type={type || 'INLINE'}>{title}</Title>
+      <Title type={type || 'DEFAULT'}>{title}</Title>
     </Container>
   )
 }

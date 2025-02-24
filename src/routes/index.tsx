@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import FormMeat from '@screens/FormMeat'
 
 import Home from '@screens/Home'
 import Statistics from '@screens/Statistics'
@@ -11,6 +12,7 @@ function AppRoutes() {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="home" component={Home} />
       <Screen name="statistics" component={Statistics} />
+      <Screen name="formmeat" component={FormMeat} />
     </Navigator>
   )
 }

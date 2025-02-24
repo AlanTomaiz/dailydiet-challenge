@@ -1,5 +1,10 @@
+import { useNavigation } from '@react-navigation/native'
+import { ArrowLeft } from 'phosphor-react-native'
+import { useTheme } from 'styled-components/native'
+
 import { InfoCard } from '@components/InfoCard'
 import {
+  BackPageBtn,
   Container,
   Content,
   Header,
@@ -12,9 +17,15 @@ import {
 } from './styles'
 
 export default function Statistics() {
+  const { COLORS } = useTheme()
+  const navigation = useNavigation()
+
   return (
     <Container>
       <Header>
+        <BackPageBtn onPress={() => navigation.navigate('home')}>
+          <ArrowLeft size={24} color={COLORS.GREEN_DARK} />
+        </BackPageBtn>
         <HeaderTitle>90,86%</HeaderTitle>
         <HeaderSubtitle>das refeições dentro da dieta</HeaderSubtitle>
       </Header>

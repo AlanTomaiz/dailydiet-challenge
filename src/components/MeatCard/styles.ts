@@ -29,7 +29,7 @@ export const Describe = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
 `
 
-export type MeatTypeStyle = 'ACCEPT' | 'WRONG'
+export type MeatTypeStyle = 'RIGTH' | 'WRONG'
 type MeatType = {
   type: MeatTypeStyle
 }
@@ -40,5 +40,5 @@ export const MeatIcon = styled.View<MeatType>`
 
   border-radius: 9999px;
   background-color: ${({ theme, type }) =>
-    type === 'ACCEPT' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+    type === 'RIGTH' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `

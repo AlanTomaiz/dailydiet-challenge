@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { css } from 'styled-components/native'
 
@@ -7,11 +8,16 @@ export const Container = styled.View`
 `
 
 export const Header = styled(SafeAreaView)`
-  position: relative;
   align-items: center;
   justify-content: center;
 
   padding: 24px 24px 34px;
+`
+
+export const BackPageBtn = styled(TouchableOpacity).attrs(() => ({
+  activeOpacity: 1
+}))`
+  align-self: flex-start;
 `
 
 export const HeaderTitle = styled.Text`
