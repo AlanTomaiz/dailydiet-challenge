@@ -14,8 +14,8 @@ export const Container = styled(TouchableOpacity)<ButtonProps>`
 
   gap: 12px;
 
-  flex: 1;
-  height: 50px;
+  /* flex: 1; */
+  min-height: 50px;
   max-height: 50px;
   border-radius: 6px;
   border: 1px solid transparent;

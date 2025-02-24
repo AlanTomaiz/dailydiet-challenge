@@ -1,10 +1,13 @@
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@components/Button'
+import { ControlledInput } from '@components/ControledInput'
 import { Input } from '@components/Input'
 import { SelectButton } from '@components/SelectButton'
+import { MealType, useStorage } from '@hooks/useStorage'
 import { formatDate } from '@utils/formate'
 import {
   ArrowIcon,
@@ -17,42 +20,59 @@ import {
   PageTitle
 } from './styles'
 
-type FormInput = {
-  name: string
-  describe: string
-  date: string
-  time: string
-  onDiet: 'RIGTH' | 'WRONG'
+type RouteParams = {
+  mealId: number
 }
 
 export default function FormMeal() {
+  const { setData, getDataById } = useStorage()
   const navigation = useNavigation()
+  const router = useRoute()
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormInput>()
+  const today = new Date()
+  today.setHours(today.getHours() - 3)
+  const params = (router.params as RouteParams) || {}
+
+  const { control, handleSubmit, setValue, watch, reset } = useForm<MealType>()
+  const [date, setDate] = useState<Date>()
+
   const watchValueDiet = watch('onDiet')
 
-  const data = new Date()
-  data.setHours(data.getHours() - 3)
+  async function execute(data: MealType) {
+    await setData({
+      ...data,
+      id: data.id || new Date().getTime()
+    })
 
-  function execute(data: FormInput) {
-    console.log(data)
     navigation.navigate('formfinalyze', { type: data.onDiet })
   }
 
-  function onChange(input: 'date' | 'time', selectedDate?: Date) {
-    const parsed = formatDate(selectedDate)
-    setValue(input, parsed[input])
+  function onChange(selectedDate: Date) {
+    setDate(selectedDate)
+    setValue('date', selectedDate)
   }
 
   function showDateOrTimePicker(mode: 'date' | 'time') {
     DateTimePickerAndroid.open({
-      value: data,
-      onChange: (_, date?: Date) => onChange(mode, date),
+      value: date || today,
+      onChange: (_, date?: Date) => onChange(date as Date),
       mode,
       is24Hour: true,
       display: 'spinner'
     })
   }
+
+  useEffect(() => {
+    ;(async () => {
+      const storage = await getDataById(params.mealId)
+      if (!storage) {
+        return
+      }
+
+      reset(storage)
+      setDate(storage.date)
+    })()
+  }, [])
 
   return (
     <Container>
@@ -65,11 +85,11 @@ export default function FormMeal() {
       <Content>
         <InputWrapper>
           <Label>Nome</Label>
-          <Input control={control} name="name" />
+          <ControlledInput control={control} name="name" />
         </InputWrapper>
         <InputWrapper>
           <Label>Descrição</Label>
-          <Input
+          <ControlledInput
             control={control}
             name="describe"
             multiline
@@ -81,21 +101,19 @@ export default function FormMeal() {
           <InputWrapper style={{ flex: 1 }}>
             <Label>Data</Label>
             <Input
-              control={control}
-              name="date"
+              value={date && formatDate(date).date}
               onPressIn={() => showDateOrTimePicker('date')}
             />
           </InputWrapper>
           <InputWrapper style={{ flex: 1 }}>
             <Label>Hora</Label>
             <Input
-              control={control}
-              name="time"
+              value={date && formatDate(date).time}
               onPressIn={() => showDateOrTimePicker('time')}
             />
           </InputWrapper>
         </InputWrapper>
-        <InputWrapper style={{ flex: 1 }}>
+        <InputWrapper>
           <Label>Está dentro da dieta?</Label>
           <InputWrapper style={{ flexDirection: 'row', gap: 24 }}>
             <SelectButton
@@ -112,7 +130,11 @@ export default function FormMeal() {
             />
           </InputWrapper>
         </InputWrapper>
-        <Button title="Cadastrar refeição" onPress={handleSubmit(execute)} />
+        <Button
+          title={params.mealId ? 'Salvar Alteração' : 'Cadastrar refeição'}
+          style={{ marginTop: 'auto' }}
+          onPress={handleSubmit(execute)}
+        />
       </Content>
     </Container>
   )

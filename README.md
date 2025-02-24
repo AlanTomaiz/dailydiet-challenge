@@ -6,12 +6,12 @@ Projeto desenvolvido durante as aulas de React Native da Rocketseat. O objetivo 
 [Figma](https://www.figma.com/community/file/1218573349379609244)
 
 ## ⚙️ Funcionalidades
-- [ ] Adicionar refeição
-- [ ] Editar refeição
-- [ ] Remover refeição
-- [ ] Mostrar as estatísticas
-- [ ] Navegação de telas
-- [ ] Armazenamento local
+- [x] Adicionar refeição
+- [x] Editar refeição
+- [x] Remover refeição
+- [x] Mostrar as estatísticas
+- [x] Navegação de telas
+- [x] Armazenamento local
 
 ## 🚀 Startando projeto
 ```bash

@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { PencilSimpleLine, TrashSimple } from 'phosphor-react-native'
 import { TouchableOpacity } from 'react-native'
 import { useTheme } from 'styled-components/native'
@@ -5,6 +6,9 @@ import { useTheme } from 'styled-components/native'
 import { Button } from '@components/Button'
 import { Tag } from '@components/Tag/Index'
 import { useModal } from '@hooks/useModal'
+import { MealType, useStorage } from '@hooks/useStorage'
+import { formatDate } from '@utils/formate'
+import { useEffect, useState } from 'react'
 import {
   ArrowIcon,
   Container,
@@ -16,35 +20,62 @@ import {
   Title
 } from './styles'
 
+type RouteParams = {
+  mealId: number
+}
+
 export default function Details() {
   const { COLORS } = useTheme()
   const { execute } = useModal()
+  const { deleteMeal, getDataById } = useStorage()
+  const router = useRoute()
+  const navigation = useNavigation()
+
+  const { mealId } = router.params as RouteParams
+
+  const [meal, setMeal] = useState<MealType>({} as MealType)
 
   async function handleDeleteMeal() {
     const confirm = await execute()
     if (!confirm) return
 
-    console.log('TO-DO excluir refeição')
+    await deleteMeal(mealId)
+    navigation.navigate('home')
   }
 
+  useEffect(() => {
+    ;(async () => {
+      const storage = await getDataById(mealId)
+      if (!storage) {
+        return navigation.navigate('home')
+      }
+
+      setMeal(storage)
+    })()
+  }, [mealId])
+
   return (
-    <Container type="RIGTH">
+    <Container type={meal.onDiet}>
       <Header>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('home')}>
           <ArrowIcon />
         </TouchableOpacity>
         <PageTitle>Refeição</PageTitle>
       </Header>
       <Content>
-        <Title>Sanduíche</Title>
-        <Describe>
-          Sanduíche de pão integral com atum e salada de alface e tomate
-        </Describe>
+        <Title>{meal.name}</Title>
+        <Describe>{meal.describe}</Describe>
         <Label>Data e hora</Label>
-        <Describe>12/12/2025 às 16:00</Describe>
-        <Tag type="RIGTH" label="dentro da dieta" />
+        <Describe>
+          {formatDate(meal.date).date} às {formatDate(meal.date).time}
+        </Describe>
+        <Tag
+          type={meal.onDiet}
+          label={meal.onDiet === 'RIGTH' ? 'dentro da dieta' : 'fora da dieta'}
+        />
         <Button
           style={{ marginTop: 'auto' }}
+          onPress={() => navigation.navigate('formmeal', { mealId })}
           title="Editar refeição"
           icon={<PencilSimpleLine size={18} color={COLORS.GRAY_100} />}
         />

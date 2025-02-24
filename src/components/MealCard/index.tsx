@@ -1,3 +1,4 @@
+import { TouchableOpacityProps } from 'react-native'
 import {
   Container,
   Describe,
@@ -7,15 +8,15 @@ import {
   Time
 } from './styles'
 
-type Props = {
+type Props = TouchableOpacityProps & {
   time: string
   meal: string
   type?: MealTypeStyle
 }
 
-export function MealCard({ time, meal, type = 'RIGTH' }: Props) {
+export function MealCard({ time, meal, type = 'RIGTH', ...rest }: Props) {
   return (
-    <Container>
+    <Container {...rest}>
       <Time>{time}</Time>
       <Separate />
       <Describe ellipsizeMode="tail" numberOfLines={1}>

@@ -1,4 +1,6 @@
+import { useNavigation } from '@react-navigation/native'
 import { ArrowUpRight, Plus } from 'phosphor-react-native'
+import { useEffect, useState } from 'react'
 import { SectionList, TouchableOpacity } from 'react-native'
 import { useTheme } from 'styled-components/native'
 
@@ -6,7 +8,9 @@ import { Button } from '@components/Button'
 import { Header } from '@components/Header'
 import { InfoCard } from '@components/InfoCard'
 import { MealCard } from '@components/MealCard'
-import { useNavigation } from '@react-navigation/native'
+import { MealType, useStorage } from '@hooks/useStorage'
+import { formatDate } from '@utils/formate'
+import { orderByDate } from '@utils/order'
 import {
   Container,
   PercentageArrowButton,
@@ -17,45 +21,66 @@ import {
   Title
 } from './styles'
 
-const data = [
-  {
-    date: '12.08.22',
-    data: [
-      {
-        time: '16:00',
-        describe: 'Salada de frango',
-        type: 'RIGTH'
-      },
-      {
-        time: '12:00',
-        describe: 'Almoço com frango parmegiana',
-        type: 'RIGTH'
-      },
-      {
-        time: '18:00',
-        describe: 'Hanburgão do Mec',
-        type: 'WRONG'
-      }
-    ]
-  }
-]
+type InOrderMealsType = {
+  date: string
+  data: MealType[]
+}
 
 export default function Home() {
   const { COLORS } = useTheme()
+  const { getData } = useStorage()
   const navigation = useNavigation()
+
+  const [data, setData] = useState<InOrderMealsType[]>([])
+  const [percent, setPercent] = useState(0)
+
+  useEffect(() => {
+    ;(async () => {
+      const storage = await getData()
+      const inOrderMeals = storage.reduce((acc, cur) => {
+        const labelDate = formatDate(cur.date).date.replaceAll('/', '.')
+        const index = acc.findIndex((row) => row.date === labelDate)
+
+        if (index === -1) {
+          acc.push({
+            date: labelDate,
+            data: [cur]
+          })
+        } else {
+          acc[index].data.push(cur)
+          acc[index].data = acc[index].data.sort(orderByDate)
+        }
+
+        return acc
+      }, [] as InOrderMealsType[])
+
+      const total = storage.length
+      const onDietCount = storage.filter(
+        (item) => item.onDiet === 'RIGTH'
+      ).length
+
+      setPercent((onDietCount / total) * 100)
+      setData(inOrderMeals)
+    })()
+  }, [])
 
   return (
     <Container>
       <Header />
+
       <TouchableOpacity onPress={() => navigation.navigate('statistics')}>
-        <InfoCard type="SUCCESS">
-          <Title>90,86%</Title>
+        <InfoCard type={percent > 60 ? 'SUCCESS' : 'DANGER'}>
+          <Title>{percent.toFixed(2) + '%'}</Title>
           <Subtitle>das refeições dentro da dieta</Subtitle>
           <PercentageArrowButton>
-            <ArrowUpRight size={24} color={COLORS.GREEN_DARK} />
+            <ArrowUpRight
+              size={24}
+              color={percent > 60 ? COLORS.GREEN_DARK : COLORS.RED_DARK}
+            />
           </PercentageArrowButton>
         </InfoCard>
       </TouchableOpacity>
+
       <SectionMeal>
         <SectionTitle>Refeições</SectionTitle>
         <Button
@@ -65,11 +90,17 @@ export default function Home() {
           title="Nova refeição"
         />
       </SectionMeal>
+
       <SectionList
         sections={data}
-        keyExtractor={(item) => item.describe}
+        keyExtractor={(item) => item.id + item.name}
         renderItem={({ item }) => (
-          <MealCard time={item.time} meal={item.describe} type="WRONG" />
+          <MealCard
+            onPress={() => navigation.navigate('details', { mealId: item.id })}
+            time={formatDate(item.date).time}
+            meal={item.name}
+            type={item.onDiet}
+          />
         )}
         renderSectionHeader={({ section: { date } }) => (
           <SectionMealTitle>{date}</SectionMealTitle>

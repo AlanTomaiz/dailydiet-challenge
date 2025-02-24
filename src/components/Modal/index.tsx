@@ -18,11 +18,16 @@ export function Modal() {
           <Message>Deseja realmente excluir o registro da refeição?</Message>
           <ButtonWrapper>
             <Button
+              style={{ flex: 1 }}
               type="INLINE"
               title="Cancelar"
               onPress={() => actions.reject()}
             />
-            <Button title="Sim, excluir" onPress={() => actions.resolve()} />
+            <Button
+              style={{ flex: 1 }}
+              title="Sim, excluir"
+              onPress={() => actions.resolve()}
+            />
           </ButtonWrapper>
         </Content>
       </Container>

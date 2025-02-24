@@ -1,6 +1,9 @@
+import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-export const Container = styled.View`
+export const Container = styled(TouchableOpacity).attrs(() => ({
+  activeOpacity: 1
+}))`
   flex-direction: row;
   align-items: center;
   gap: 12px;

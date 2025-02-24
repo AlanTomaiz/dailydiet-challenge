@@ -24,11 +24,11 @@ export const SectionTitle = styled.Text`
 export const SectionMealTitle = styled.Text`
   font-weight: bold;
   font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
-  margin-bottom: 8px;
+  margin: 24px 0 8px;
 `
 
 export const SectionMeal = styled.View`
-  margin: 40px 0 32px;
+  margin: 40px 0 8px;
 `
 
 export const PercentageArrowButton = styled.View`
